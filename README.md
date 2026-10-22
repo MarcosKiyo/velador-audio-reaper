@@ -7,7 +7,7 @@
 
 Un chat **dentro de REAPER** que arma tu sesión, ordena archivos, mide y exporta. Hecho en [Estudio Velador](https://kiyo.ar).
 
-> 💬 **Velador:** «La IA mide, no escucha. El criterio es tuyo. Esto te saca lo aburrido.»
+> **Velador:** «La IA mide, no escucha. El criterio es tuyo. Esto te saca lo aburrido.»
 
 <p align="center"><img src="assets/sesion-armada.jpg" alt="Sesión armada con carpetas y colores" width="320"></p>
 
@@ -24,7 +24,7 @@ Un chat **dentro de REAPER** que arma tu sesión, ordena archivos, mide y export
 9. 🔑 **Iniciá sesión**: botón *Iniciar sesión*. Se abre la Terminal con el login **oficial de Anthropic**; lo completás ahí.
 10. 💬 **Escribí** (ejemplos abajo) y Enter. Cada acción se puede deshacer con **Cmd+Z**.
 
-> 💬 **Velador:** «Empezá con una carpeta de audios de prueba, no con la sesión de un cliente.»
+> **Velador:** «Empezá con una carpeta de audios de prueba, no con la sesión de un cliente.»
 
 ## ✍️ Probá pedirle
 
@@ -38,7 +38,7 @@ Un chat **dentro de REAPER** que arma tu sesión, ordena archivos, mide y export
 ## 🧰 Qué trae
 
 - 📁 **`cable ordenar`** — copia tus audios ordenados por familia (`BAT 01 - Kick.wav`) y te da una hoja con volumen, balance y fase. Sirve en **cualquier programa**.
-  > 💬 **Velador:** «Los que tienen `?` los dedujo midiendo: revisalos vos.»
+  > **Velador:** «Los que tienen `?` los dedujo midiendo: revisalos vos.»
 - 📦 **`cable stems`** — stems por familia, sumando los archivos (sin efectos).
 - 📊 **`cable medir`** — mide cada audio y te dice cuáles parecen la misma toma.
 - 🗣️ **`cable eses`** — de-esser en una copia. El original no se toca.
