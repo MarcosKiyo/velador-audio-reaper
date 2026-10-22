@@ -1,0 +1,82 @@
+#!/usr/bin/env python3
+"""cable: puente entre Claude Code y REAPER.
+  cable lua [archivo]       ejecuta Lua dentro de REAPER (stdin si no hay archivo); un paso de deshacer
+  cable medir <carpeta>     mide cada audio (bandas, ataques, estereo, parecido entre pistas)
+  cable ordenar <carpeta>   copia ordenada por familia (prefijo+numero, ? en dudosos), desde 0, + hoja con LUFS/balance/fase; sirve para cualquier DAW
+  cable logic <carpeta_ORDENADA>  abre los audios en Logic Pro: proyecto nuevo con una pista por archivo, nombrada y desde el compas 1
+  cable logic-xml <carpeta>       (experimental) FCPXML: en Logic 10.7.9 NO separa pistas, queda una sola
+  cable samples buscar "kick seco corto" | indexar | agregar <carpeta> | estado   busca en tus carpetas de samples (solo lectura) y mide los candidatos
+  cable stems <carpeta_ORDENADA>  stems por familia (suma simple sin efectos), para cualquier DAW
+  cable eses <voz.wav>...   crea '<voz> - Orejitas DS.wav' (de-esser por automatizacion), sin tocar el original"""
+import os, sys, time, json, uuid, subprocess, warnings
+warnings.filterwarnings("ignore")
+from pathlib import Path
+AQUI = Path(__file__).resolve().parent
+RUN = Path(os.environ.get("CABLE_RUN") or AQUI.parent / "run")
+
+def lua(src):
+    id_ = uuid.uuid4().hex[:8]; RUN.mkdir(exist_ok=True)
+    tmp = RUN / f"{id_}.part"; tmp.write_text(src); tmp.rename(RUN / f"{id_}.lua")
+    res = RUN / f"{id_}.res"; t0 = time.time()
+    while not res.exists():
+        if time.time() - t0 > 180: sys.exit("cable: REAPER no respondio en 180 s (esta abierta la ventana Agent Cable?)")
+        time.sleep(0.05)
+    r = json.loads(res.read_text()); res.unlink()
+    print(r["out"]); sys.exit(0 if r["ok"] else 1)
+
+def medir(carpeta):
+    import numpy as np
+    SR = 22050; HOP = int(SR * .1)
+    def leer(f):
+        r = subprocess.run(["ffmpeg", "-v", "error", "-i", str(f), "-ac", "2", "-ar", str(SR), "-f", "f32le", "-"], capture_output=True)
+        return np.frombuffer(r.stdout, np.float32).reshape(-1, 2)
+    def m_(x):
+        m = x.mean(1); n = len(m) // HOP
+        fr = m[:n * HOP].reshape(n, HOP); rms = np.sqrt((fr ** 2).mean(1) + 1e-12); db = 20 * np.log10(rms)
+        act = (db > db.max() - 40) & (db > -80); idx = np.where(act)[0]
+        o = dict(dur=round(len(m) / SR, 1), activo=round(act.mean(), 2),
+                 rms=round(float(20 * np.log10(np.sqrt((fr[act] ** 2).mean()) + 1e-12)), 1) if len(idx) else -99)
+        W = 2048; seg = [m[i * HOP:i * HOP + W] for i in idx[::3] if i * HOP + W <= len(m)]
+        S = np.abs(np.fft.rfft(np.array(seg) * np.hanning(W), axis=1)) ** 2 if seg else np.ones((1, W // 2 + 1))
+        fq = np.fft.rfftfreq(W, 1 / SR); A = np.sqrt(S); tot = A.sum() + 1e-12
+        o["graves<150"] = round(A[:, fq < 150].sum() / tot, 2); o["medios"] = round(A[:, (fq >= 150) & (fq < 2500)].sum() / tot, 2)
+        o["agudos>2.5k"] = round(A[:, fq >= 2500].sum() / tot, 2); o["brillo_hz"] = int((A * fq).sum() / tot)
+        o["planitud"] = round(float(np.mean(np.exp(np.log(A[:, 5:] + 1e-9).mean(1)) / (A[:, 5:].mean(1) + 1e-9))), 2)
+        h = int(SR * .01); k = len(m) // h; e = np.sqrt((m[:k * h].reshape(k, h) ** 2).mean(1)); d = np.diff(np.log(e + 1e-6))
+        o["ataques_s"] = round(((d > 1.2) & (np.r_[d[1:], 0] < d)).sum() / max(act.sum() * .1, 1), 1)
+        L, R = x[:, 0], x[:, 1]; o["estereo"] = round(float(np.sqrt(((L - R) ** 2).mean() / (((L + R) ** 2).mean() + 1e-12))), 2)
+        return o, db
+    ext = {".wav", ".mp3", ".flac", ".aif", ".aiff", ".m4a", ".ogg"}
+    fs = sorted(f for f in Path(carpeta).iterdir() if f.suffix.lower() in ext and not f.name.startswith("."))
+    res, envs = {}, {}
+    for f in fs:
+        o, db = m_(leer(f)); res[f.name] = o; envs[f.name] = db
+    for a in envs:
+        best = []
+        for b in envs:
+            if a == b: continue
+            n = min(len(envs[a]), len(envs[b])); ea, eb = envs[a][:n], envs[b][:n]; msk = (ea > -80) | (eb > -80)
+            if msk.sum() < 30: continue
+            c = np.corrcoef(np.clip(ea[msk], -80, 0), np.clip(eb[msk], -80, 0))[0, 1]
+            if np.isfinite(c): best.append((round(float(c), 2), b))
+        best.sort(reverse=True); res[a]["parecido"] = best[:2]
+    cols = ["planitud", "dur", "activo", "rms", "graves<150", "medios", "agudos>2.5k", "brillo_hz", "ataques_s", "estereo"]
+    print("archivo".ljust(34) + " ".join(c[:9].rjust(9) for c in cols) + "  parecido")
+    for n, o in res.items(): print(n[:33].ljust(34) + " ".join(str(o[c]).rjust(9) for c in cols) + "  " + ", ".join(f"{b[:18]} {c}" for c, b in o["parecido"]))
+
+a = sys.argv[1:]
+if not a: sys.exit(__doc__)
+if a[0] == "lua": lua(open(a[1]).read() if len(a) > 1 else sys.stdin.read())
+elif a[0] == "medir": medir(a[1])
+elif a[0] == "ordenar": os.execvp("python3", ["python3", str(AQUI / "_ordenar.py"), *a[1:]])
+elif a[0] == "logic":
+    d = Path(a[1]).expanduser(); fs = sorted(str(f) for f in d.iterdir() if f.suffix.lower() in {".wav", ".aif", ".aiff", ".mp3", ".m4a"} and not f.name.startswith("."))
+    if not fs: sys.exit("no hay audios en " + str(d))
+    # AppleScript respeta el orden de la lista (con `open` directo Logic las ordena al azar cuando son muchas)
+    lista = ", ".join('POSIX file "%s"' % f.replace('"', '\\"') for f in fs)
+    os.execvp("osascript", ["osascript", "-e", 'tell application "Logic Pro X" to open {%s}' % lista])
+elif a[0] == "logic-xml": os.execvp("python3", ["python3", str(AQUI / "_fcpxml.py"), *a[1:]])
+elif a[0] == "samples": os.execvp("python3", ["python3", str(AQUI / "_samples.py"), *a[1:]])
+elif a[0] == "stems": os.execvp("python3", ["python3", str(AQUI / "_stems.py"), *a[1:]])
+elif a[0] == "eses": os.execvp("python3", ["python3", str(AQUI / "_eses_procesar.py"), *a[1:]])
+else: sys.exit(__doc__)

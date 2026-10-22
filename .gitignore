@@ -1,0 +1,11 @@
+# datos locales: nunca se publican
+agent-cable/run/
+agent-cable/samples.db
+agent-cable/samples.cfg
+agent-cable/config.txt
+agent-cable/auth.txt*
+agent-cable/turno_*
+agent-cable/*.log
+.DS_Store
+__pycache__/
+*.pyc
