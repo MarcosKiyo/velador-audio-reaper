@@ -1,4 +1,4 @@
-"""Genera '<voz> - Orejitas DS.wav': idéntico al original salvo en S (volumen) y estridencia (banda 2-5 kHz)."""
+"""Genera '<voz> - Velador DS.wav': idéntico al original salvo en S (volumen) y estridencia (banda 2-5 kHz)."""
 import sys, json, subprocess, numpy as np
 from scipy.signal import butter, sosfiltfilt
 sys.path.insert(0, __import__("os").path.dirname(__import__("os").path.abspath(__file__))); from _eses_analisis import SR, analizar, curvas
@@ -19,7 +19,7 @@ for src in sys.argv[1:]:
         y = (X[:,c] + (10**(gh/20)-1)*xb) * 10**(gs/20)
         Y[act,c] = y[act]
     q = np.clip(np.round(Y*2**23), -2**23, 2**23-1).astype(np.int32)
-    out = src[:-4] + " - Orejitas DS.wav"
+    out = src[:-4] + " - Velador DS.wav"
     b = np.zeros((q.size,3), np.uint8); v = q.reshape(-1).astype(np.int64) & 0xFFFFFF
     b[:,0]=v&255; b[:,1]=(v>>8)&255; b[:,2]=(v>>16)&255
     subprocess.run(["ffmpeg","-y","-v","error","-f","s24le","-ar",str(SR),"-ac","2","-i","-","-c:a","pcm_s24le",out], input=b.tobytes(), check=True)

@@ -7,7 +7,7 @@
   cable logic-xml <carpeta>       (experimental) FCPXML: en Logic 10.7.9 NO separa pistas, queda una sola
   cable samples buscar "kick seco corto" | indexar | agregar <carpeta> | estado   busca en tus carpetas de samples (solo lectura) y mide los candidatos
   cable stems <carpeta_ORDENADA>  stems por familia (suma simple sin efectos), para cualquier DAW
-  cable eses <voz.wav>...   crea '<voz> - Orejitas DS.wav' (de-esser por automatizacion), sin tocar el original"""
+  cable eses <voz.wav>...   crea '<voz> - Velador DS.wav' (de-esser por automatizacion), sin tocar el original"""
 import os, sys, time, json, uuid, subprocess, warnings
 warnings.filterwarnings("ignore")
 from pathlib import Path
@@ -66,6 +66,8 @@ def medir(carpeta):
 
 a = sys.argv[1:]
 if not a: sys.exit(__doc__)
+if a[0] in ("medir", "ordenar", "stems", "logic") and (len(a) < 2 or not Path(a[1]).expanduser().is_dir()):
+    sys.exit("cable %s: falta una carpeta que exista (recibi: %s)" % (a[0], a[1] if len(a) > 1 else "nada"))
 if a[0] == "lua": lua(open(a[1]).read() if len(a) > 1 else sys.stdin.read())
 elif a[0] == "medir": medir(a[1])
 elif a[0] == "ordenar": os.execvp("python3", ["python3", str(AQUI / "_ordenar.py"), *a[1:]])

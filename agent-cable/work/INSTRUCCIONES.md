@@ -5,7 +5,7 @@ Trabajas SOLO con el comando `cable` (Bash) y leyendo archivos. Nunca toques los
 ## Comandos
 - `cable lua <<'EOF' ... EOF`  corre Lua dentro de REAPER (API ReaScript completa: `reaper.*`; `out("texto")` devuelve datos). Un llamado = un paso de deshacer. Primera linea opcional `-- cable: descripcion corta` (nombra el paso). Agrupa todo lo posible en pocos llamados (un llamado por etapa, no uno por pista).
 - `cable medir <carpeta>`  tabla de medicion de cada audio (rms, graves/medios/agudos, brillo, ataques/s, estereo, parecido de envolvente = misma toma/doble).
-- `cable eses <voz.wav>`  genera `<voz> - Orejitas DS.wav` (de-esser por automatizacion; el original queda intacto). Despues agregalo como toma al item con Lua (AddTakeToMediaItem + SetMediaItemTake_Source).
+- `cable eses <voz.wav>`  genera `<voz> - Velador DS.wav` (de-esser por automatizacion; el original queda intacto). Despues agregalo como toma al item con Lua (AddTakeToMediaItem + SetMediaItemTake_Source).
 
 ## Receta A: armar sesion desde una carpeta
 1. `cable medir <carpeta>` y mira tambien los nombres reales de archivo. Decide familia y nombre de cada audio (BATERIA, BAJO, SYNTH, GUITARRAS, AMBIENTES, VOCES; referencia aparte, muteada). Si un nombre del cliente es claro, usalo; si no, deduce por medicion y marca la duda en la respuesta.
@@ -14,7 +14,7 @@ Trabajas SOLO con el comando `cable` (Bash) y leyendo archivos. Nunca toques los
 4. Responde: cuantas pistas/carpetas, que dudaste, tiempo.
 
 ## Receta B: eses (de-esser) a las voces
-`cable eses` por cada voz, en una sola llamada con todas las rutas; luego un llamado Lua que agrega "Orejitas DS" como toma activa de cada item (el original queda como toma 1). Reporta cuantas S detecto/bajo (salida JSON) y el maximo de reduccion.
+`cable eses` por cada voz, en una sola llamada con todas las rutas; luego un llamado Lua que agrega "Velador DS" como toma activa de cada item (el original queda como toma 1). Reporta cuantas S detecto/bajo (salida JSON) y el maximo de reduccion.
 
 ## Receta C: stems
 Los stems se exportan por familia (carpeta): guarda mute/solo originales, mutea las pistas hoja que no son de la familia, `GetSetProjectInfo(0,"RENDER_SETTINGS",0,true)` (master mix), `RENDER_BOUNDSFLAG`=1 (proyecto entero) o 2 (rango de tiempo), `RENDER_SRATE`, `RENDER_CHANNELS`=2, `GetSetProjectInfo_String(0,"RENDER_FILE",carpeta.."/",true)`, `RENDER_PATTERN`=nombre de la familia, `Main_OnCommand(42230,0)` (render con ultimos ajustes, cierra solo); restaura mutes al final. Carpeta de salida `STEMS/` junto al proyecto salvo que digan otra. Nada se sobreescribe: si existe, agrega sufijo con fecha.

@@ -1,4 +1,4 @@
-"""Orejitas de-esser por automatización: detecta S (sibilantes) y estridencia (2-5 kHz) en una voz
+"""Velador de-esser por automatización: detecta S (sibilantes) y estridencia (2-5 kHz) en una voz
 y calcula la curva de reducción. Sin procesar el original: devuelve eventos + curvas."""
 import sys, json, subprocess, numpy as np
 from scipy.signal import stft, butter, sosfiltfilt
