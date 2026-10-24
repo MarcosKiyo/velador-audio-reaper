@@ -1,0 +1,16 @@
+name: Una idea o un pedido
+description: Qué te gustaría que haga
+labels: ["idea"]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: Qué te gustaría poder hacer
+      description: Contalo como se lo pedirías al chat.
+    validations:
+      required: true
+  - type: input
+    id: daw
+    attributes:
+      label: Qué programa usás
+      description: REAPER, Ableton, Logic, Pro Tools, otro.

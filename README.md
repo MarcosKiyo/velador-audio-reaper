@@ -1,11 +1,10 @@
 <p align="center"><img src="assets/velador-estudio.jpg" alt="Estudio Velador" width="100%"></p>
 
-# 🎛️ Velador Herramientas
+# Panel de IA para REAPER
 
-> ### ⚠️ BETA · EN DESARROLLO
-> Se está armando a la vista de todos. Puede fallar y cambiar. **Probalo siempre sobre una copia.** Si algo no anda: [abrí un issue](../../issues).
+**Integración de REAPER con Claude Code.** Un chat dentro de REAPER que arma tu sesión, ordena archivos, mide y exporta. Hecho en [Estudio Velador](https://kiyo.ar).
 
-Un chat **dentro de REAPER** que arma tu sesión, ordena archivos, mide y exporta. Hecho en [Estudio Velador](https://kiyo.ar).
+<sub>Beta, en desarrollo: probalo sobre una copia de tus sesiones. Lo vamos mejorando con lo que nos cuentes.</sub>
 
 > **Velador:** «La IA mide, no escucha. El criterio es tuyo. Esto te saca lo aburrido.»
 
@@ -46,6 +45,19 @@ Un chat **dentro de REAPER** que arma tu sesión, ordena archivos, mide y export
 - 🍎 **`cable logic`** — abre los audios en Logic, una pista por archivo. [Más info](docs/logic.md).
 
 Los comandos están en `~/Library/Application Support/REAPER/Scripts/AgentCable/bin/`.
+
+## 📖 Ejemplos reales
+
+Pedidos de verdad, con los tiempos medidos: [docs/ejemplos.md](docs/ejemplos.md).
+
+## 💌 Escribime
+
+Quiero saber qué te pasó, qué te sirvió y qué falta.
+
+- 🐞 **Algo no anda** → [abrir un issue](../../issues/new/choose)
+- 💡 **Una idea o un pedido** → [Discusiones](../../discussions)
+- 🎚️ **Mostrame cómo lo usaste** → [contame tu ejemplo](../../issues/new?template=ejemplo.yml)
+- 📷 **Mensaje directo** → [@kiyo.velador](https://www.instagram.com/kiyo.velador/)
 
 ## 🛡️ Cuidado
 

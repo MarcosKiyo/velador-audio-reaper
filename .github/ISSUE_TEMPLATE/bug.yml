@@ -1,0 +1,24 @@
+name: Algo no anda
+description: Contame qué pasó
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: Gracias por avisar. No pegues nombres de clientes ni datos personales.
+  - type: textarea
+    id: que
+    attributes:
+      label: Qué hiciste y qué pasó
+      description: El pedido que escribiste en el chat y lo que respondió o hizo.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Versiones
+      description: Mac (chip), versión de REAPER y de Claude Code (`claude --version`).
+  - type: textarea
+    id: extra
+    attributes:
+      label: Algo más
+      description: Capturas, mensajes de error, lo que esperabas que pasara.

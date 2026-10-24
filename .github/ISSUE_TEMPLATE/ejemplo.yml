@@ -1,0 +1,20 @@
+name: Contame tu ejemplo
+description: Mostrame cómo lo usaste
+labels: ["ejemplo"]
+body:
+  - type: textarea
+    id: pedido
+    attributes:
+      label: Qué le pediste
+    validations:
+      required: true
+  - type: textarea
+    id: resultado
+    attributes:
+      label: Qué pasó, cuánto tardó y qué te sirvió
+  - type: checkboxes
+    id: permiso
+    attributes:
+      label: Permiso
+      options:
+        - label: Si me sirve, pueden mencionar mi ejemplo (sin mi nombre).
