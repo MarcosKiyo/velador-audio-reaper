@@ -4,7 +4,7 @@
 
 # AI panel for REAPER
 
-**REAPER + Claude Code integration.** A chat panel inside REAPER that builds your mixing session from a folder of audio, sorts files, measures levels and exports stems. Made at [Estudio Velador](https://kiyo.ar).
+**REAPER + Claude Code integration.** A chat panel inside REAPER that builds your mixing session from a folder of audio, sorts files, measures levels and exports stems. Made at [Estudio Velador](https://kiyo.ar), in Patagonia, Argentina.
 
 <sub>Beta, in development: try it on a copy of your sessions. We improve it with what you tell us.</sub>
 
