@@ -1,3 +1,5 @@
+<p><a href="examples.md">English</a> · <b>Español</b></p>
+
 # Ejemplos reales
 
 Todo esto se probó el 21 y 22 de octubre de 2026 en una Mac con chip Apple, REAPER 7.14 y Claude Code, **sobre copias** de audios de una sesión real (24 archivos de unos 3 minutos). Los tiempos son de reloj, no estimados. Cada acción en REAPER queda como un paso de deshacer.

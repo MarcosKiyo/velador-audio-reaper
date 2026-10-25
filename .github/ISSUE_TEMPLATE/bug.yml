@@ -1,24 +1,24 @@
-name: Algo no anda
-description: Contame qué pasó
+name: Something broke / Algo no anda
+description: Tell me what happened (English or Spanish)
 labels: ["bug"]
 body:
   - type: markdown
     attributes:
-      value: Gracias por avisar. No pegues nombres de clientes ni datos personales.
+      value: Thanks for reporting. Please don't paste client names or personal data. / Gracias por avisar. No pegues nombres de clientes ni datos personales.
   - type: textarea
     id: que
     attributes:
-      label: Qué hiciste y qué pasó
-      description: El pedido que escribiste en el chat y lo que respondió o hizo.
+      label: What you did and what happened / Qué hiciste y qué pasó
+      description: The request you typed in the panel and what it answered or did.
     validations:
       required: true
   - type: input
     id: version
     attributes:
-      label: Versiones
-      description: Mac (chip), versión de REAPER y de Claude Code (`claude --version`).
+      label: Versions / Versiones
+      description: Mac (chip), REAPER version and Claude Code version (`claude --version`).
   - type: textarea
     id: extra
     attributes:
-      label: Algo más
-      description: Capturas, mensajes de error, lo que esperabas que pasara.
+      label: Anything else / Algo más
+      description: Screenshots, error messages, what you expected.

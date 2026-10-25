@@ -1,16 +1,16 @@
-name: Una idea o un pedido
-description: Qué te gustaría que haga
+name: An idea or a request / Una idea o un pedido
+description: What would you like it to do? (English or Spanish)
 labels: ["idea"]
 body:
   - type: textarea
     id: idea
     attributes:
-      label: Qué te gustaría poder hacer
-      description: Contalo como se lo pedirías al chat.
+      label: What would you like to be able to do / Qué te gustaría poder hacer
+      description: Say it the way you'd ask the panel.
     validations:
       required: true
   - type: input
     id: daw
     attributes:
-      label: Qué programa usás
-      description: REAPER, Ableton, Logic, Pro Tools, otro.
+      label: Which DAW do you use / Qué programa usás
+      description: REAPER, Ableton, Logic, Pro Tools, other.

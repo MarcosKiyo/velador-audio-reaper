@@ -1,8 +1,8 @@
 blank_issues_enabled: true
 contact_links:
-  - name: Una idea o una pregunta
+  - name: An idea or a question / Una idea o una pregunta
     url: https://github.com/MarcosKiyo/velador-audio-reaper/discussions
-    about: Charlemos en Discusiones.
-  - name: Mensaje directo
+    about: Let's talk in Discussions (English or Spanish).
+  - name: Direct message / Mensaje directo
     url: https://www.instagram.com/kiyo.velador/
-    about: También podés escribirme por Instagram.
+    about: You can also write on Instagram.

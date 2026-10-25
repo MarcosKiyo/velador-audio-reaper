@@ -1,3 +1,5 @@
+<p><a href="logic.en.md">English</a> · <b>Español</b></p>
+
 # Agent Cable en Logic Pro (probado en Logic Pro X 10.7.9, macOS)
 Logic no deja que otro programa le arme pistas (sin API). Lo que sí hace: abre un proyecto nuevo con una pista por cada audio que le pasás, con el nombre del archivo y todos desde el compás 1. Por eso el camino es ordenar primero y abrir después.
 
